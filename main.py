@@ -390,7 +390,7 @@ def image(data):
 def connect(auth):
     room = session.get("room")
     name = session["username"]
-    logger.debug("User %s connected to room %s", name, room)
+    logger.debug("WebSocket connection established. Room: %s, User: %s", room, name)
     if not room or not name:
         return
     if room not in rooms:
@@ -412,6 +412,7 @@ def disconnect():
     room = session.get("room")
     name = session.get("name")
     leave_room(room)
+    logger.debug("WebSocket connection closed. Room: %s, User: %s", room, name)
 
     if room in rooms:
         rooms[room]["members"] -= 1
