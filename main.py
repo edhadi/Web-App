@@ -2,19 +2,26 @@ from flask import Flask, flash, render_template, request, session, redirect, url
 from flask_socketio import join_room, leave_room, send, SocketIO
 import random, hashlib
 from string import ascii_uppercase
-from flask_cors import CORS
 from datetime import datetime
 from pymongo import MongoClient
 from pymongo.collection import Collection
 from pymongo.database import Database
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "blabla"
 socketio = SocketIO(app)
 rooms = {}
 
+mongo_url = os.getenv("MONGO_URL") 
+mongo_username = os.getenv("MONGO_USERNAME") 
+mongo_password =  os.getenv("MONGO_PASSWORD")
+
 # Pymongo connection
-uri = "mongodb+srv://admin:123@cluster0.4r2hpju.mongodb.net/?retryWrites=true&w=majority"
+uri = f"mongodb+srv://{mongo_username}:{mongo_password}@{mongo_url}/?retryWrites=true&w=majority"
 client = MongoClient(uri)
 
 # MongoDB database and collection for chat logs
