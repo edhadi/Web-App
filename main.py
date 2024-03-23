@@ -424,7 +424,7 @@ def disconnect():
     print(f"{name} has left the room {room}")
 
 if __name__ == "__main__":
-    socketio.run(app, debug=True)
+    socketio.run(app, debug=False)
 
 # MYSQL for users
 # MongoDB for objects (images etc.)
