@@ -12,13 +12,13 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
-
-
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "blabla"
 socketio = SocketIO(app)
 rooms = {}
+
+logging.basicConfig(level=logging.DEBUG)
+logger = logging.getLogger(__name__)
 
 mongo_url = os.getenv("MONGO_URL") 
 mongo_username = os.getenv("MONGO_USERNAME") 
@@ -59,13 +59,13 @@ def generate_unique_code(Length):
 
 @app.route("/login", methods=["POST", "GET"])
 def login():
+    logger.debug("Received login request")
     if "username" in session:
             flash("You are already logged in", 'error')
             return redirect(url_for("home"))
     if request.method == "POST":
         email = request.form.get("email")
         password = request.form.get("password")
-        logging.info("Attempting login for email: %s", email)
 
         if not email or not password:
             flash("Please complete all the fields", 'error')
@@ -105,6 +105,7 @@ def logout():
 
 @app.route("/", methods=["POST", "GET"])
 def home():
+    logger.debug("Received home request")
     if "username" not in session:
         flash('You must login first.', 'error')
         return redirect(url_for("login"))
@@ -356,6 +357,8 @@ def get_chat_logs(room):
 @socketio.on("message")
 def message(data):
     room = session.get("room")
+    logger.debug("Received message in room %s: %s", room, data)
+
     if room not in rooms:
         return 
     
@@ -387,6 +390,7 @@ def image(data):
 def connect(auth):
     room = session.get("room")
     name = session["username"]
+    logger.debug("User %s connected to room %s", name, room)
     if not room or not name:
         return
     if room not in rooms:
