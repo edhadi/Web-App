@@ -7,9 +7,12 @@ from pymongo import MongoClient
 from pymongo.collection import Collection
 from pymongo.database import Database
 import os
+import logging
 from dotenv import load_dotenv
 
 load_dotenv()
+
+logging.basicConfig(filename="flask.log", encoding="utf-8", level=logging.DEBUG)
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "blabla"
@@ -361,6 +364,7 @@ def message(data):
 
     send(content, to=room)
     rooms[room]["messages"].append(content)
+    logging.info(f"Message sent by {session['username']}: {data['data']}")
     print(f"{session['username']} said: {data['data']}")
     append_to_chat_log(data["data"], session["username"], room)
 
