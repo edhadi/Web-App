@@ -12,7 +12,8 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-logging.basicConfig(filename="flask.log", encoding="utf-8", level=logging.DEBUG)
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "blabla"
@@ -64,6 +65,7 @@ def login():
     if request.method == "POST":
         email = request.form.get("email")
         password = request.form.get("password")
+        logging.info("Attempting login for email: %s", email)
 
         if not email or not password:
             flash("Please complete all the fields", 'error')
@@ -364,7 +366,6 @@ def message(data):
 
     send(content, to=room)
     rooms[room]["messages"].append(content)
-    logging.info(f"Message sent by {session['username']}: {data['data']}")
     print(f"{session['username']} said: {data['data']}")
     append_to_chat_log(data["data"], session["username"], room)
 
