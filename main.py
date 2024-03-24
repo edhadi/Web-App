@@ -17,6 +17,11 @@ app.config["SECRET_KEY"] = "blabla"
 socketio = SocketIO(app)
 rooms = {}
 
+from flask_cors import CORS
+CORS(app)
+
+socketio = SocketIO(app, cors_allowed_origins="*")
+
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
@@ -113,16 +118,14 @@ def home():
         code = request.form.get("code")
         join = request.form.get("join", False)
         create = request.form.get("create", False)
-        logout = request.form.get("logout")
+        logout_btn = request.form.get("logout")
         admin = request.form.get("admin")
 
         if admin:
             return redirect(url_for("admin"))
 
-        if logout == "true":
-            session.pop("username", None)
-            flash('You have successfully logged out.', 'success')
-            return redirect(url_for("login"))
+        if logout_btn == "true":
+            return logout()
 
         if join != False and not code:
             flash("Please enter a room code.", 'error')
@@ -229,6 +232,10 @@ def admin():
         addusername = request.form.get("addusername")
         addemail = request.form.get("addemail")
         addpassword = request.form.get("addpassword")
+        logout_btn = request.form.get("logout")
+
+        if logout_btn:
+            return logout()
 
         if addusername and addemail and addpassword:
             hasher = hashlib.shake_256()
@@ -424,7 +431,7 @@ def disconnect():
     print(f"{name} has left the room {room}")
 
 if __name__ == "__main__":
-    socketio.run(app, debug=False)
+    socketio.run(app, debug=True)
 
 # MYSQL for users
 # MongoDB for objects (images etc.)
