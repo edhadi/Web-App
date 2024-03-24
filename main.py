@@ -14,12 +14,8 @@ load_dotenv()
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "blabla"
+socketio = SocketIO(app)
 rooms = {}
-
-from flask_cors import CORS
-CORS(app)
-
-socketio = SocketIO(app, cors_allowed_origins="*")
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
