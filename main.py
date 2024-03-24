@@ -87,6 +87,7 @@ def login():
             if hashed_password == stored_password:
                 session["username"] = user["username"]
                 session["isadmin"] = user.get("isadmin", 0)
+                logger.debug("User %s logged in successfully.", session["username"])
                 print("User:", user)
                 print("Session username:", session["username"])
                 return redirect(url_for("home"))
@@ -105,11 +106,11 @@ def logout():
 
 @app.route("/", methods=["POST", "GET"])
 def home():
-    logger.debug("Received home request")
     if "username" not in session:
         flash('You must login first.', 'error')
         return redirect(url_for("login"))
     if request.method == "POST":
+        logger.debug("Received home request")
         code = request.form.get("code")
         join = request.form.get("join", False)
         create = request.form.get("create", False)
@@ -146,6 +147,7 @@ def room():
         room_code = request.form.get("joinroom")
         if room_code in rooms:
             session["room"] = room_code
+            logger.debug("Received home request")
             return redirect(url_for("room"))
         else:
             flash("Room does not exist", 'error')
