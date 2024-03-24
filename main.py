@@ -87,7 +87,7 @@ def login():
             if hashed_password == stored_password:
                 session["username"] = user["username"]
                 session["isadmin"] = user.get("isadmin", 0)
-                logger.debug("User %s logged in successfully.", session["username"])
+                logger.info("User %s logged in successfully.", session["username"])
                 print("User:", user)
                 print("Session username:", session["username"])
                 return redirect(url_for("home"))
