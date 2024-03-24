@@ -14,7 +14,6 @@ load_dotenv()
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "blabla"
-socketio = SocketIO(app)
 rooms = {}
 
 from flask_cors import CORS
@@ -432,6 +431,3 @@ def disconnect():
 
 if __name__ == "__main__":
     socketio.run(app, debug=True)
-
-# MYSQL for users
-# MongoDB for objects (images etc.)
