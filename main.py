@@ -360,9 +360,9 @@ def get_chat_logs(room):
 @socketio.on("message")
 def message(data):
     room = session.get("room")
-    print("Received message in room %s: %s", room, data)
+    print(f"Received message in room {room}: {data}")
     if room not in rooms:
-        return 
+        return redirect(url_for('home'))
     
     content = {
         "name": session["username"],
@@ -391,7 +391,7 @@ def image(data):
 def connect(auth):
     room = session.get("room")
     name = session["username"]
-    print("WebSocket connection established. Room: %s, User: %s", room, name)
+    print(f"WebSocket connection established. Room: {room}, User: {name}")
     if not room or not name:
         return
     if room not in rooms:
@@ -413,7 +413,7 @@ def disconnect():
     room = session.get("room")
     name = session.get("name")
     leave_room(room)
-    logger.debug("WebSocket connection closed. Room: %s, User: %s", room, name)
+    print(f"WebSocket connection closed. Room: {room}, User: {name}")
 
     if room in rooms:
         rooms[room]["members"] -= 1
