@@ -87,7 +87,6 @@ def login():
             if hashed_password == stored_password:
                 session["username"] = user["username"]
                 session["isadmin"] = user.get("isadmin", 0)
-                logger.info("User %s logged in successfully.", session["username"])
                 print("User:", user)
                 print("Session username:", session["username"])
                 return redirect(url_for("home"))
@@ -110,7 +109,7 @@ def home():
         flash('You must login first.', 'error')
         return redirect(url_for("login"))
     if request.method == "POST":
-        logger.debug("Received home request")
+        print('Received home request')
         code = request.form.get("code")
         join = request.form.get("join", False)
         create = request.form.get("create", False)
@@ -147,7 +146,7 @@ def room():
         room_code = request.form.get("joinroom")
         if room_code in rooms:
             session["room"] = room_code
-            logger.debug("Received home request")
+            print('Received room request')
             return redirect(url_for("room"))
         else:
             flash("Room does not exist", 'error')
@@ -361,8 +360,7 @@ def get_chat_logs(room):
 @socketio.on("message")
 def message(data):
     room = session.get("room")
-    logger.debug("Received message in room %s: %s", room, data)
-
+    print("Received message in room %s: %s", room, data)
     if room not in rooms:
         return 
     
@@ -370,7 +368,6 @@ def message(data):
         "name": session["username"],
         "message": data["data"]
     }
-
     send(content, to=room)
     rooms[room]["messages"].append(content)
     print(f"{session['username']} said: {data['data']}")
@@ -394,7 +391,7 @@ def image(data):
 def connect(auth):
     room = session.get("room")
     name = session["username"]
-    logger.debug("WebSocket connection established. Room: %s, User: %s", room, name)
+    print("WebSocket connection established. Room: %s, User: %s", room, name)
     if not room or not name:
         return
     if room not in rooms:
