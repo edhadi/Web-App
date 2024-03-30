@@ -408,9 +408,11 @@ def connect(auth):
         return
     print("Rooms type, and rooms ", type(rooms), rooms)
     join_room(room=room)
-
+    print("Room joined succesfully")
     emit_member_count(room)
+    print("Member count done sucessfully")
     send({"name": name, "message": "has entered the room"}, to=room)
+    print("Message sent succesfully")
     rooms[room]["members"] += 1
     print(f"{name} joined room {room}")
 
