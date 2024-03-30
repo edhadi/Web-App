@@ -395,6 +395,9 @@ def image(data):
 
 @socketio.on("connect")
 def connect(auth):
+
+    print('session')
+    print(session, type(session))
     room = session.get("room")
     name = session["username"]
     print(f"WebSocket connection established. Room: {room}, User: {name}")
