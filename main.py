@@ -404,6 +404,7 @@ def connect(auth):
     if not room or not name:
         return
     if room not in rooms:
+        print('Room not in rooms')
         leave_room(room)
         return
     print("Rooms type, and rooms ", type(rooms), rooms)
