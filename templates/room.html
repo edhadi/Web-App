@@ -42,6 +42,7 @@
     };
 
     socketio.on("message", (data) => {
+        console.log("Data of message")
         console.log(data)
         if (data.is_image) {
             createMessage(data.name, data.message, true);
