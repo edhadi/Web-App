@@ -20,8 +20,8 @@ rooms = {}
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
-mongo_url = os.getenv("MONGO_URL") 
-mongo_username = os.getenv("MONGO_USERNAME") 
+mongo_url = os.getenv("MONGO_URL")
+mongo_username = os.getenv("MONGO_USERNAME")
 mongo_password =  os.getenv("MONGO_PASSWORD")
 
 # Pymongo connection
@@ -59,7 +59,7 @@ def generate_unique_code(Length):
 
 @app.route("/login", methods=["POST", "GET"])
 def login():
-    logger.debug("Received login request")
+    print("Received login request")
     if "username" in session:
             flash("You are already logged in", 'error')
             return redirect(url_for("home"))
@@ -368,6 +368,12 @@ def message(data):
         "name": session["username"],
         "message": data["data"]
     }
+    print("sesion:")
+    print(type(session), session)
+    print("content:")
+    print(type(content), content)
+    print("room:")
+    print(type(room), room)
     send(content, to=room)
     rooms[room]["messages"].append(content)
     print(f"{session['username']} said: {data['data']}")
