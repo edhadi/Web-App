@@ -438,4 +438,4 @@ def disconnect():
     print(f"{name} has left the room {room}")
 
 if __name__ == "__main__":
-    socketio.run(app, debug=True, allow_unsafe_werkzeug=True)
+    socketio.run(host="0.0.0.0", app, debug=True, allow_unsafe_werkzeug=True)
