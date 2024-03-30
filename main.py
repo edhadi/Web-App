@@ -399,15 +399,16 @@ def connect(auth):
     print('session')
     print(session, type(session))
     room = session.get("room")
-    name = session["username"]
+    name = session.get("username")
     print(f"WebSocket connection established. Room: {room}, User: {name}")
     if not room or not name:
         return
     if room not in rooms:
         leave_room(room)
         return
-    
-    join_room(room)
+    print("Rooms type, and rooms ", type(rooms), rooms)
+    join_room(room=room)
+
     emit_member_count(room)
     send({"name": name, "message": "has entered the room"}, to=room)
     rooms[room]["members"] += 1
