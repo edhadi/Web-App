@@ -368,7 +368,7 @@ def message(data):
         "name": session["username"],
         "message": data["data"]
     }
-    print("sesion:")
+    print("sesion: ")
     print(type(session), session)
     print("content:")
     print(type(content), content)
