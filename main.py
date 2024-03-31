@@ -424,7 +424,7 @@ def emit_member_count(room):
 @socketio.on("disconnect")
 def disconnect():
     room = session.get("room")
-    name = session.get("name")
+    name = session.get("username")
     leave_room(room)
     print(f"WebSocket connection closed. Room: {room}, User: {name}")
 
